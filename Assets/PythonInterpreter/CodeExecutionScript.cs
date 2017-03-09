@@ -14,7 +14,7 @@ public class CodeExecutionScript : MonoBehaviour {
 
     private string output;
 
-    private CharacterScript charScript;
+    private static CharacterScript charScript;
 
     private string pythonFunctions;
 
@@ -24,12 +24,17 @@ public class CodeExecutionScript : MonoBehaviour {
 	void Start () {
         py = new Interpreter();
 
+        initChar();
+    }
+    
+    public static void initChar() {
         charScript = FindObjectOfType<CharacterScript>();
     }
-	
-    public static bool setVariables(int[,] b, int pX, int pY, int gX, int gY){
+    public static bool setVariables(int[,] b, int bX, int bY, int pX, int pY, int gX, int gY){
         if(py != null) {
             py.Scope.SetVariable("board", (object) b);
+            py.Scope.SetVariable("boardX", bX);
+            py.Scope.SetVariable("boardY", bY);
             py.Scope.SetVariable("playerX", pX);
             py.Scope.SetVariable("playerY", pY);
             py.Scope.SetVariable("goalX", gX);

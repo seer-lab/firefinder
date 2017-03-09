@@ -3,6 +3,8 @@ playerX = 0
 playerY = 0
 # Game board
 board = [[]]
+boardX = 0
+boardY = 0
 # Goal Location
 goalX = 0
 goalY = 0
@@ -10,38 +12,42 @@ goalY = 0
 # Check if obstacle in given direction
 
 
-def check(dir):
-    if(dir == "up"):
-        return bool(board[playerX, playerY + 1] < 3)
-    if(dir == "down"):
-        return bool(board[playerX, playerY - 1] < 3)
-    if(dir == "left"):
-        return bool(board[playerX - 1, playerY] < 3)
-    if(dir == "right"):
-        return bool(board[playerX + 1, playerY] < 3)
+def check(direction):
+    if(direction == "up"):
+        if(playerY < boardY - 1):
+            return bool(board[playerX, playerY + 1] <= 0)
+    if(direction == "down"):
+        if(playerY > 0):
+            return bool(board[playerX, playerY - 1] <= 0)
+    if(direction == "left"):
+        if(playerX > 0):
+            return bool(board[playerX - 1, playerY] <= 0)
+    if(direction == "right"):
+        if(playerX < boardX - 1):
+            return bool(board[playerX + 1, playerY] <= 0)
     return bool(0)
 
 # Move in given direction if there is nothing preventing player
 
 
-def move(dir):
+def move(direction):
     global playerX
     global playerY
-    if(dir == "up"):
-        if(check(dir)):
-            print dir
+    if(direction == "up"):
+        if(check(direction)):
+            print direction
             playerY += 1
-    if(dir == "down"):
-        if(check(dir)):
-            print dir
+    if(direction == "down"):
+        if(check(direction)):
+            print direction
             playerY -= 1
-    if(dir == "left"):
-        if(check(dir)):
-            print dir
+    if(direction == "left"):
+        if(check(direction)):
+            print direction
             playerX -= 1
-    if(dir == "right"):
-        if(check(dir)):
-            print dir
+    if(direction == "right"):
+        if(check(direction)):
+            print direction
             playerX += 1
 
 

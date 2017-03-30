@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,8 +15,6 @@ public class CodeExecutionScript : MonoBehaviour {
 
     private static CharacterScript charScript;
 
-    private string pythonFunctions;
-
     private List<string> commands;
 
 	// Use this for initialization
@@ -30,7 +27,7 @@ public class CodeExecutionScript : MonoBehaviour {
     public static void initChar() {
         charScript = FindObjectOfType<CharacterScript>();
     }
-    public static bool setVariables(int[,] b, int bX, int bY, int pX, int pY, int gX, int gY){
+    public static bool setVariables(char[,] b, int bX, int bY, int pX, int pY, int gX, int gY){
         if(py != null) {
             py.Scope.SetVariable("board", (object) b);
             py.Scope.SetVariable("boardX", bX);
@@ -46,8 +43,7 @@ public class CodeExecutionScript : MonoBehaviour {
     }
 
     public void onRunClick() {
-        string allCode = pythonFunctions+code;
-        output = py.Compile(allCode, Microsoft.Scripting.SourceCodeKind.Statements);
+        output = py.Compile(code);
         output = output.TrimEnd('\r', '\n');
         outputText.text = output;
 
@@ -56,7 +52,7 @@ public class CodeExecutionScript : MonoBehaviour {
         Stack<string> commandStack = new Stack<string>();
 
         foreach(string cmd in commands) {
-            commandStack.Push(cmd.TrimEnd('\r', '\n'));
+            commandStack.Push(cmd.Trim('\r', '\n'));
         }
 
         charScript.addCommands(commandStack);

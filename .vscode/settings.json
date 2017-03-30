@@ -54,6 +54,5 @@
         "Temp/":true
     }
 ,
-"python.formatting.provider": "autopep8",
 "editor.tabSize": 2
 }

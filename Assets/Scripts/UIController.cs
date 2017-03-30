@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour {
@@ -20,11 +18,17 @@ public class UIController : MonoBehaviour {
 		if(editorPage) { editorPage.SetActive(false); }
 
 		InputField t = manPage.GetComponent<InputField>();
-		t.text = "Variables:\nplayerX, playerY\ngoalX, goalY\nboard(2d array)\n\nDirections:\n'up', 'right', 'down', 'left'\n\nFunctions:\nmove(direction) # Attempts to move\ncheck(direction) # Returns if you can move\n";
+		TextAsset docText = Resources.Load("Text/Documentation") as TextAsset;
+		t.text = docText.text;
 	}
 
 	public static void onGameWin() {
 		winScreen.SetActive(true);
+		if(GameManager.level % 2 == 1) {
+			winScreen.GetComponentsInChildren<Text>()[1].text = "Next Level is a challenge level\nYou need to use the same code from the last level\nIf it doesnt work try Restarting";
+		} else {
+			winScreen.GetComponentsInChildren<Text>()[1].text = "Challenge Complete, Lets try a harder map!";
+		}
 	}
 
 	public void onManClick() {
@@ -46,7 +50,7 @@ public class UIController : MonoBehaviour {
 	}
 
 	public static void canEdit(bool edit) {
-		editorPage.GetComponent<InputField>().readOnly =  !edit;
+		editorPage.GetComponent<InputField>().readOnly = !edit;
 	}
 
 

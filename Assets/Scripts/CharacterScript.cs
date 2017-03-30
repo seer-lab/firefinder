@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterScript : MonoBehaviour {
@@ -8,32 +7,28 @@ public class CharacterScript : MonoBehaviour {
 
 	Vector3 startPostion, endPosition;
 
-	public float moveSeconds = 1f;
+	private float moveSeconds = 0.75f;
 	private float moveTimer = 0;
 	private bool isMoving = false;
-
-	public Vector2 position;
-
+	private bool isExecuting = false;
 	private Stack<string> commands;
 
 	// Use this for initialization
 	void Start () {
-		startPostion = 	transform.position;
+		startPostion = transform.position;
 		anim = GetComponent<Animator>();
 	}
 	
 	private void Move() {
 		anim.SetBool("isMoving", true);
 		isMoving = true;
-		moveTimer = 0;
-
 		startPostion = transform.position;
-		}
+	}
 
 	private void StopMove() {
 		anim.SetBool("isMoving", false);
 		isMoving = false;
-
+		moveTimer = 0;
 		transform.position = endPosition;
 	}
 
@@ -41,36 +36,39 @@ public class CharacterScript : MonoBehaviour {
 	void Update () {
 		if(isMoving) {
 			moveTimer += Time.deltaTime;
-
 			if(moveTimer > moveSeconds) {
 				StopMove();
 			} else {
-				float ratio = moveTimer / moveSeconds;
+				float ratio = (moveTimer / moveSeconds);
 				transform.position = Vector3.Lerp(startPostion, endPosition, ratio);
 			}
-
-		} else {
+		} else if(isExecuting) {
 			if(!GameManager.gameWon) {
-				if(commands!=null) {
+				if(commands.Count != 0) {
 					executeCommand();
+				} else {
+					GameManager.GameOver = true;
+					isExecuting = false;
 				}
 			}
 		}
 	}
 
 	private void executeCommand() {
-		if(commands.Count != 0) {
+		if (commands.Count != 0 && !isMoving) {
 			string cmd = commands.Pop();
-			move(cmd);
+			cmdMove(cmd);
 		}
 	}
 
 	public void addCommands(Stack<string> cmds) {
-		this.commands = cmds;
+		if(!isExecuting) {
+			this.commands = cmds;
+			isExecuting = true;
+		}
 	}
 
-
-	public void move(string direction) {
+	public void cmdMove(string direction) {
 		switch(direction) {
 			case "up":
 				if(GameManager.playerPosition.y+1 < GameManager.BoardYSize) {
@@ -95,7 +93,6 @@ public class CharacterScript : MonoBehaviour {
 					Move();
 					GameManager.playerPosition += new Vector2(0,-1);
 				}
-
 			break;
 			case "left":
 				if(GameManager.playerPosition.x-1 >= 0) {
@@ -105,6 +102,9 @@ public class CharacterScript : MonoBehaviour {
 					GameManager.playerPosition += new Vector2(-1,0);
 				}
 
+			break;
+			default:
+				Debug.Log("Action Failed: " + direction);
 			break;
 		}
 	}

@@ -1,0 +1,12 @@
+Variables:
+playerX, playerY
+goalX, goalY
+board(2d array)
+
+Directions:
+'up', 'right', 'down', 'left'
+
+Functions:
+move(direction) # Attempts to move
+check(direction) # Returns if you can move
+      

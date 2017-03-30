@@ -1,0 +1,10 @@
+(X Size) (Y Size)
+M a p
+a a p
+p p p
+
+- Glossary -
+p: Player
+g: Goal
+o: Walkable Tile
+x: Obstacle Tile

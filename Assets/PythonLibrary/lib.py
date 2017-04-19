@@ -1,3 +1,6 @@
+import sys
+sys.path.append(r"c:\python27\lib")
+
 # Player Location
 playerX = 0
 playerY = 0
@@ -54,12 +57,11 @@ def move(direction):
 # for i in range(0,100):
 # 	if(playerX < goalX):
 # 		move("right")
-# 	else:
+# 	elif(playerX > goalX):
 # 		move("left")
-# while(playerY != goalY):
 # 	if (playerY < goalY):
 # 		move("up")
-# 	else:
+# 	elif(playerY > goalY):
 # 		move("down")
 
 # for i in range(0,100):
